@@ -89,6 +89,22 @@ Models in `/backend/app/models/db_models/`: User, Chat, Message, MessageAttachme
 
 Migrations in `/backend/migrations/` managed by Alembic.
 
+## Local Development Notes
+
+### Permission System with E2B Sandbox
+The permission system uses an MCP server inside E2B sandboxes that makes HTTP requests back to the backend. Since E2B sandboxes run remotely, they cannot reach `localhost`. For permission prompts to work locally:
+
+```bash
+# Expose backend via tunnel (ngrok or cloudflared)
+ngrok http 8080
+# Then set BASE_URL to your tunnel URL
+BASE_URL=https://your-tunnel-url.ngrok.io docker compose up -d
+```
+
+### Useful URLs (when running)
+- **API Docs:** http://localhost:8080/api/v1/docs
+- **Admin Panel:** http://localhost:8080/admin (default: `admin@example.com` / `admin123`)
+
 ## Environment
 
 Key env vars in `.env`: `DATABASE_URL`, `REDIS_URL`, `SECRET_KEY`, `ANTHROPIC_API_KEY`, `E2B_API_KEY`, `ENVIRONMENT` (development/production)

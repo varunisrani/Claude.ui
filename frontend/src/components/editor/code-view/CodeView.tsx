@@ -5,6 +5,7 @@ import { View } from '../editor-view/View';
 import type { FileStructure } from '@/types';
 import { cn } from '@/utils/cn';
 import { useIsMobile } from '@/hooks';
+import { BOTTOM_NAV_HEIGHT } from '@/config/breakpoints';
 
 export interface CodeViewProps {
   files: FileStructure[];
@@ -58,14 +59,16 @@ export const CodeView = memo(function CodeView({
           <>
             <div
               className="absolute inset-0 z-20 bg-black/50"
+              style={{ bottom: BOTTOM_NAV_HEIGHT }}
               onClick={() => setShowMobileTree(false)}
             />
             <div
               className={cn(
-                'absolute left-0 top-0 z-30 h-full w-72',
+                'absolute left-0 top-0 z-30 h-full w-[280px] max-w-[85vw]',
                 'border-r border-border dark:border-border-dark',
                 backgroundClass,
               )}
+              style={{ paddingBottom: BOTTOM_NAV_HEIGHT }}
             >
               <Tree
                 files={files}

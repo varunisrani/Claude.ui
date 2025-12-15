@@ -9,14 +9,14 @@ export const InstructionsSettingsTab: React.FC<InstructionsSettingsTabProps> = (
   instructions,
   onInstructionsChange,
 }) => (
-  <div className="space-y-6">
+  <div className="space-y-4 sm:space-y-6">
     <div>
-      <h2 className="mb-4 text-sm font-medium text-text-primary dark:text-text-dark-primary">
+      <h2 className="mb-3 text-sm font-medium text-text-primary sm:mb-4 dark:text-text-dark-primary">
         Custom Instructions
       </h2>
       <div className="space-y-4">
         <div>
-          <div className="mb-2 flex items-center justify-between">
+          <div className="mb-2 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <Label className="text-sm text-text-primary dark:text-text-dark-primary">
               Instructions for the AI assistant
             </Label>
@@ -30,7 +30,7 @@ export const InstructionsSettingsTab: React.FC<InstructionsSettingsTabProps> = (
             placeholder="Enter custom instructions for how the AI should behave, respond, or approach tasks..."
             maxLength={1500}
             rows={8}
-            className="min-h-32"
+            className="min-h-32 text-sm"
           />
           <p className="mt-2 text-xs text-text-tertiary dark:text-text-dark-tertiary">
             These instructions will be added to every conversation with the AI. Use them to specify

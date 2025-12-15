@@ -85,7 +85,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       placeholder={placeholder}
       disabled={isLoading}
       rows={1}
-      className="max-h-[180px] min-h-[56px] w-full resize-none overflow-y-auto bg-transparent py-1.5 pr-14 text-sm leading-normal text-text-primary outline-none transition-all duration-200 placeholder:text-text-quaternary focus:ring-0 disabled:cursor-not-allowed disabled:opacity-50 dark:text-text-dark-primary dark:placeholder:text-text-dark-quaternary"
+      className="max-h-[150px] min-h-[48px] w-full resize-none overflow-y-auto bg-transparent py-1.5 pr-12 text-sm leading-normal text-text-primary outline-none transition-all duration-200 placeholder:text-text-quaternary focus:ring-0 disabled:cursor-not-allowed disabled:opacity-50 sm:max-h-[180px] sm:min-h-[56px] sm:pr-14 dark:text-text-dark-primary dark:placeholder:text-text-dark-quaternary"
       style={{ scrollbarWidth: 'thin' }}
       aria-label="Message input"
     />

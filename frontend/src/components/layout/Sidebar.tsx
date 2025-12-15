@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useInView } from 'react-intersection-observer';
 import type { FetchNextPageOptions } from '@tanstack/react-query';
@@ -12,6 +12,9 @@ import { useUIStore, useStreamStore } from '@/store';
 import { SidebarChatItem } from './SidebarChatItem';
 import { ChatDropdown } from './ChatDropdown';
 import { DROPDOWN_WIDTH, DROPDOWN_HEIGHT, DROPDOWN_MARGIN } from '@/config/constants';
+import { useIsMobile } from '@/hooks/useIsMobile';
+import { useSwipeGesture } from '@/hooks/useSwipeGesture';
+import { BOTTOM_NAV_HEIGHT } from '@/config/breakpoints';
 
 function calculateDropdownPosition(buttonRect: DOMRect): { top: number; left: number } {
   const isMobile = window.innerWidth < 640;
@@ -59,6 +62,7 @@ export interface SidebarProps {
   fetchNextPage?: (options?: FetchNextPageOptions) => unknown;
   isFetchingNextPage?: boolean;
   hasActivityBar?: boolean;
+  onClose?: () => void;
 }
 
 export function Sidebar({
@@ -70,10 +74,25 @@ export function Sidebar({
   fetchNextPage,
   isFetchingNextPage,
   hasActivityBar = false,
+  onClose,
 }: SidebarProps) {
   const navigate = useNavigate();
   const sidebarOpen = useUIStore((state) => state.sidebarOpen);
+  const setSidebarOpen = useUIStore((state) => state.setSidebarOpen);
   const activeStreamMetadata = useStreamStore((state) => state.activeStreamMetadata);
+  const isMobile = useIsMobile();
+
+  // Handle sidebar close
+  const handleClose = useCallback(() => {
+    setSidebarOpen(false);
+    onClose?.();
+  }, [setSidebarOpen, onClose]);
+
+  // Swipe gesture to close sidebar on mobile
+  useSwipeGesture({
+    onSwipeLeft: handleClose,
+    enabled: isMobile && sidebarOpen,
+  });
   const streamingChatIds = useMemo(
     () => activeStreamMetadata.map((meta) => meta.chatId),
     [activeStreamMetadata],
@@ -156,8 +175,12 @@ export function Sidebar({
     (chatId: string) => {
       onChatSelect(chatId);
       setHoveredChatId(null);
+      // Close sidebar on mobile after selecting a chat
+      if (isMobile) {
+        handleClose();
+      }
     },
-    [onChatSelect],
+    [onChatSelect, isMobile, handleClose],
   );
 
   const handleDeleteChat = useCallback((chatId: string) => {
@@ -254,15 +277,51 @@ export function Sidebar({
 
   return (
     <>
+      {/* Mobile backdrop overlay */}
+      {isMobile && sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 md:hidden"
+          style={{ bottom: BOTTOM_NAV_HEIGHT }}
+          onClick={handleClose}
+          aria-hidden="true"
+        />
+      )}
+
       <aside
         className={cn(
-          'absolute top-0 h-full w-64',
           'bg-surface dark:bg-surface-dark',
           'border-r border-border dark:border-border-dark',
-          'z-40 flex flex-col transition-[left] duration-500 ease-in-out',
-          sidebarOpen ? (hasActivityBar ? 'left-12' : 'left-0') : '-left-64',
+          'z-50 flex flex-col transition-transform duration-300 ease-in-out',
+          // Mobile: Full-height drawer from left
+          isMobile
+            ? cn(
+                'fixed top-0 left-0 h-full w-[280px] max-w-[85vw]',
+                sidebarOpen ? 'translate-x-0' : '-translate-x-full',
+              )
+            : cn(
+                // Desktop: Original absolute positioning
+                'absolute top-0 h-full w-64 transition-[left] duration-500',
+                sidebarOpen ? (hasActivityBar ? 'left-12' : 'left-0') : '-left-64',
+              ),
         )}
+        style={isMobile ? { paddingBottom: BOTTOM_NAV_HEIGHT } : undefined}
       >
+        {/* Mobile header with close button */}
+        {isMobile && (
+          <div className="flex items-center justify-between border-b border-border p-3 dark:border-border-dark">
+            <span className="text-sm font-semibold text-text-primary dark:text-text-dark-primary">
+              Chat History
+            </span>
+            <button
+              onClick={handleClose}
+              className="rounded-md p-1.5 text-text-tertiary transition-colors hover:bg-surface-hover hover:text-text-primary dark:text-text-dark-tertiary dark:hover:bg-surface-dark-hover dark:hover:text-text-dark-primary"
+              aria-label="Close sidebar"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+        )}
+
         <div className="p-3">
           <Button
             onClick={handleNewChat}

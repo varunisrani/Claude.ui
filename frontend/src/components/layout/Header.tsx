@@ -329,7 +329,13 @@ export function Header({ onLogout, userName = 'User', isAuthPage = false }: Head
   );
 
   return (
-    <header className="z-50 border-b border-border bg-surface-secondary px-4 dark:border-border-dark dark:bg-surface-dark">
+    <header
+      className={cn(
+        'z-50 border-b border-border bg-surface-secondary px-4 dark:border-border-dark dark:bg-surface-dark',
+        // Hide on mobile for main app (bottom nav replaces it), but show on auth pages
+        !isAuthPage && 'hidden md:block',
+      )}
+    >
       <div className="relative flex h-12 items-center justify-between">
         <div className="flex items-center gap-1">
           {isAuthenticated && !isAuthPage && (

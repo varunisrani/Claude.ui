@@ -23,21 +23,19 @@ export const GeneralSettingsTab: React.FC<GeneralSettingsTabProps> = ({
 }) => (
   <div className="space-y-6">
     <div>
-      <h2 className="mb-4 text-sm font-medium text-text-primary dark:text-text-dark-primary">
+      <h2 className="mb-3 text-sm font-medium text-text-primary sm:mb-4 dark:text-text-dark-primary">
         Sandbox Environment
       </h2>
       <div className="space-y-4">
         {fields.map((field) => (
-          <div key={field.key}>
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-sm font-medium text-text-primary dark:text-text-dark-primary">
-                  {field.label}
-                </h3>
-                <p className="mt-0.5 text-xs text-text-tertiary dark:text-text-dark-tertiary">
-                  {field.description}
-                </p>
-              </div>
+          <div key={field.key} className="rounded-lg border border-border p-3 sm:border-0 sm:p-0 dark:border-border-dark">
+            <div>
+              <h3 className="text-sm font-medium text-text-primary dark:text-text-dark-primary">
+                {field.label}
+              </h3>
+              <p className="mt-0.5 text-xs text-text-tertiary dark:text-text-dark-tertiary">
+                {field.description}
+              </p>
             </div>
             <SecretInput
               value={settings[field.key] ?? ''}
@@ -53,12 +51,12 @@ export const GeneralSettingsTab: React.FC<GeneralSettingsTabProps> = ({
     </div>
 
     <div>
-      <h2 className="mb-4 text-sm font-medium text-text-primary dark:text-text-dark-primary">
+      <h2 className="mb-3 text-sm font-medium text-text-primary sm:mb-4 dark:text-text-dark-primary">
         Notifications
       </h2>
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="flex flex-col gap-3 rounded-lg border border-border p-3 sm:flex-row sm:items-center sm:justify-between sm:border-0 sm:p-0 dark:border-border-dark">
+          <div className="flex-1">
             <h3 className="text-sm font-medium text-text-primary dark:text-text-dark-primary">
               Sound Notification
             </h3>
@@ -75,30 +73,28 @@ export const GeneralSettingsTab: React.FC<GeneralSettingsTabProps> = ({
     </div>
 
     <div>
-      <h2 className="mb-4 text-sm font-medium text-text-primary dark:text-text-dark-primary">
+      <h2 className="mb-3 text-sm font-medium text-text-primary sm:mb-4 dark:text-text-dark-primary">
         Data Management
       </h2>
       <div className="space-y-4">
-        <div>
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-medium text-text-primary dark:text-text-dark-primary">
-                Delete All Chats
-              </h3>
-              <p className="mt-0.5 text-xs text-text-tertiary dark:text-text-dark-tertiary">
-                Permanently delete all chat history. This action cannot be undone.
-              </p>
-            </div>
-            <Button
-              type="button"
-              onClick={onDeleteAllChats}
-              variant="outline"
-              size="sm"
-              className="border-error-200 text-error-600 hover:bg-error-50 dark:border-error-800 dark:text-error-400 dark:hover:bg-error-400/10"
-            >
-              Delete All
-            </Button>
+        <div className="flex flex-col gap-3 rounded-lg border border-border p-3 sm:flex-row sm:items-center sm:justify-between sm:border-0 sm:p-0 dark:border-border-dark">
+          <div className="flex-1">
+            <h3 className="text-sm font-medium text-text-primary dark:text-text-dark-primary">
+              Delete All Chats
+            </h3>
+            <p className="mt-0.5 text-xs text-text-tertiary dark:text-text-dark-tertiary">
+              Permanently delete all chat history. This action cannot be undone.
+            </p>
           </div>
+          <Button
+            type="button"
+            onClick={onDeleteAllChats}
+            variant="outline"
+            size="sm"
+            className="w-full border-error-200 text-error-600 hover:bg-error-50 sm:w-auto dark:border-error-800 dark:text-error-400 dark:hover:bg-error-400/10"
+          >
+            Delete All
+          </Button>
         </div>
       </div>
     </div>

@@ -199,9 +199,9 @@ export const TasksSettingsTab: React.FC<TasksSettingsTabProps> = ({ onAddTask, o
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-3 flex flex-col gap-2 sm:mb-4 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-sm font-medium text-text-primary dark:text-text-dark-primary">
             Scheduled Tasks
           </h2>
@@ -210,7 +210,7 @@ export const TasksSettingsTab: React.FC<TasksSettingsTabProps> = ({ onAddTask, o
             onClick={onAddTask}
             variant="outline"
             size="sm"
-            className="flex items-center gap-1.5"
+            className="flex w-full items-center justify-center gap-1.5 sm:w-auto"
             disabled={isLimitReached}
             title={isLimitReached ? `Maximum of ${MAX_TASKS_LIMIT} tasks reached` : undefined}
             aria-label="Add new scheduled task"
@@ -220,18 +220,18 @@ export const TasksSettingsTab: React.FC<TasksSettingsTabProps> = ({ onAddTask, o
           </Button>
         </div>
 
-        <p className="mb-4 text-xs text-text-tertiary dark:text-text-dark-tertiary">
+        <p className="mb-3 text-xs text-text-tertiary sm:mb-4 dark:text-text-dark-tertiary">
           Automate your workflows with scheduled AI tasks. Each task creates a new chat with your
           prompt at the specified time.
         </p>
 
         {tasksList.length === 0 ? (
-          <div className="rounded-lg border border-border p-8 text-center dark:border-border-dark">
+          <div className="rounded-lg border border-border p-6 text-center sm:p-8 dark:border-border-dark">
             <CalendarClock className="mx-auto mb-3 h-8 w-8 text-text-quaternary dark:text-text-dark-quaternary" />
             <p className="mb-3 text-sm text-text-tertiary dark:text-text-dark-tertiary">
               No scheduled tasks configured yet
             </p>
-            <Button type="button" onClick={onAddTask} variant="primary" size="sm">
+            <Button type="button" onClick={onAddTask} variant="primary" size="sm" className="w-full sm:w-auto">
               Create Your First Task
             </Button>
           </div>
@@ -246,11 +246,11 @@ export const TasksSettingsTab: React.FC<TasksSettingsTabProps> = ({ onAddTask, o
               {tasksList.map((task) => (
                 <div
                   key={task.id}
-                  className="rounded-lg border border-border bg-surface p-4 transition-colors hover:border-border-hover dark:border-border-dark dark:bg-surface-dark dark:hover:border-border-dark-hover"
+                  className="rounded-lg border border-border bg-surface p-3 transition-colors hover:border-border-hover sm:p-4 dark:border-border-dark dark:bg-surface-dark dark:hover:border-border-dark-hover"
                 >
-                  <div className="flex items-start justify-between gap-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                     <div className="min-w-0 flex-1">
-                      <div className="mb-2 flex items-center gap-2">
+                      <div className="mb-2 flex flex-wrap items-center gap-2">
                         <h3 className="truncate text-sm font-medium text-text-primary dark:text-text-dark-primary">
                           {task.task_name}
                         </h3>
@@ -261,22 +261,22 @@ export const TasksSettingsTab: React.FC<TasksSettingsTabProps> = ({ onAddTask, o
                         {task.prompt_message}
                       </p>
 
-                      <div className="flex flex-wrap gap-4 text-xs text-text-secondary dark:text-text-dark-secondary">
+                      <div className="flex flex-col gap-2 text-xs text-text-secondary sm:flex-row sm:flex-wrap sm:gap-4 dark:text-text-dark-secondary">
                         <div className="flex items-center gap-1.5">
-                          <Clock className="h-4 w-4" />
-                          <span>{getRecurrenceDisplay(task)}</span>
+                          <Clock className="h-4 w-4 flex-shrink-0" />
+                          <span className="truncate">{getRecurrenceDisplay(task)}</span>
                         </div>
 
                         {task.next_execution && task.enabled && (
                           <div className="flex items-center gap-1.5">
-                            <Calendar className="h-4 w-4" />
+                            <Calendar className="h-4 w-4 flex-shrink-0" />
                             <span>Next: {getNextExecutionDisplay(task)}</span>
                           </div>
                         )}
 
                         {task.execution_count > 0 && (
                           <div className="flex items-center gap-1.5">
-                            <History className="h-4 w-4" />
+                            <History className="h-4 w-4 flex-shrink-0" />
                             <span>
                               Ran {task.execution_count} time{task.execution_count !== 1 ? 's' : ''}
                             </span>
@@ -291,23 +291,23 @@ export const TasksSettingsTab: React.FC<TasksSettingsTabProps> = ({ onAddTask, o
                       )}
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-end gap-2 border-t border-border pt-3 sm:border-0 sm:pt-0 dark:border-border-dark">
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
                         onClick={() => handleToggleTask(task)}
-                        className="h-8 w-8 text-text-secondary dark:text-text-dark-secondary"
+                        className="h-10 w-10 text-text-secondary sm:h-8 sm:w-8 dark:text-text-dark-secondary"
                         title={task.enabled ? 'Pause task' : 'Resume task'}
                         aria-label={task.enabled ? 'Pause task' : 'Resume task'}
                         disabled={togglingTaskId === task.id}
                       >
                         {togglingTaskId === task.id ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <Loader2 className="h-5 w-5 animate-spin sm:h-4 sm:w-4" />
                         ) : task.enabled ? (
-                          <Pause className="h-4 w-4" />
+                          <Pause className="h-5 w-5 sm:h-4 sm:w-4" />
                         ) : (
-                          <Play className="h-4 w-4" />
+                          <Play className="h-5 w-5 sm:h-4 sm:w-4" />
                         )}
                       </Button>
 
@@ -316,11 +316,11 @@ export const TasksSettingsTab: React.FC<TasksSettingsTabProps> = ({ onAddTask, o
                         variant="ghost"
                         size="icon"
                         onClick={() => onEditTask(task)}
-                        className="h-8 w-8 text-text-secondary dark:text-text-dark-secondary"
+                        className="h-10 w-10 text-text-secondary sm:h-8 sm:w-8 dark:text-text-dark-secondary"
                         title="Edit task"
                         aria-label="Edit task"
                       >
-                        <Edit2 className="h-4 w-4" />
+                        <Edit2 className="h-5 w-5 sm:h-4 sm:w-4" />
                       </Button>
 
                       <Button
@@ -328,15 +328,15 @@ export const TasksSettingsTab: React.FC<TasksSettingsTabProps> = ({ onAddTask, o
                         variant="ghost"
                         size="icon"
                         onClick={() => handleDeleteRequest(task)}
-                        className="h-8 w-8 text-error-600 hover:bg-error-50 dark:text-error-400 dark:hover:bg-error-400/10"
+                        className="h-10 w-10 text-error-600 hover:bg-error-50 sm:h-8 sm:w-8 dark:text-error-400 dark:hover:bg-error-400/10"
                         title="Delete task"
                         aria-label="Delete task"
                         disabled={deletingTaskId === task.id}
                       >
                         {deletingTaskId === task.id ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <Loader2 className="h-5 w-5 animate-spin sm:h-4 sm:w-4" />
                         ) : (
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-5 w-5 sm:h-4 sm:w-4" />
                         )}
                       </Button>
                     </div>

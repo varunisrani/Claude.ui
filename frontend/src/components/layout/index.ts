@@ -7,3 +7,5 @@ export type { HeaderProps } from './Header';
 
 export { Sidebar } from './Sidebar';
 export type { SidebarProps } from './Sidebar';
+
+export { BottomNav } from './BottomNav';

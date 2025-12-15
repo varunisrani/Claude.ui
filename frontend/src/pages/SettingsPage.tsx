@@ -419,18 +419,18 @@ const SettingsPage: React.FC = () => {
 
   return (
     <div className="flex min-h-full bg-surface dark:bg-surface-dark">
-      <div className="flex flex-1 justify-center px-4 py-6">
+      <div className="flex flex-1 justify-center px-3 py-4 sm:px-4 sm:py-6">
         <div className="w-full max-w-3xl">
-          <div className="mb-6">
-            <h1 className="flex items-center gap-2 text-xl font-semibold text-text-primary dark:text-text-dark-primary">
+          <div className="mb-4 sm:mb-6">
+            <h1 className="flex items-center gap-2 text-lg font-semibold text-text-primary sm:text-xl dark:text-text-dark-primary">
               <SettingsIcon className="h-4 w-4" />
               Settings
             </h1>
           </div>
 
-          <div className="mb-6">
+          <div className="mb-4 sm:mb-6">
             <nav
-              className="flex space-x-4 border-b border-border dark:border-border-dark"
+              className="-mx-3 flex overflow-x-auto border-b border-border px-3 scrollbar-hide sm:-mx-0 sm:space-x-4 sm:px-0 dark:border-border-dark"
               role="tablist"
               aria-label="Settings sections"
             >
@@ -439,7 +439,7 @@ const SettingsPage: React.FC = () => {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   variant="unstyled"
-                  className={tabButtonClasses(activeTab === tab.id)}
+                  className={`${tabButtonClasses(activeTab === tab.id)} whitespace-nowrap px-3 sm:px-0`}
                   role="tab"
                   aria-selected={activeTab === tab.id}
                   aria-controls={`${tab.id}-panel`}
@@ -452,20 +452,20 @@ const SettingsPage: React.FC = () => {
           </div>
 
           {hasUnsavedChanges && (
-            <div className="animate-in fade-in slide-in-from-top-2 mb-4 flex items-center justify-between rounded-lg border border-l-4 border-border border-l-brand-500 bg-surface-secondary p-4 shadow-sm duration-300 dark:border-border-dark dark:border-l-brand-600 dark:bg-surface-dark-secondary">
-              <div className="flex items-center gap-3">
-                <AlertCircle className="h-5 w-5 text-brand-600 dark:text-brand-500" />
-                <span className="text-sm font-semibold text-text-primary dark:text-text-dark-primary">
+            <div className="animate-in fade-in slide-in-from-top-2 mb-4 flex flex-col gap-3 rounded-lg border border-l-4 border-border border-l-brand-500 bg-surface-secondary p-3 shadow-sm duration-300 sm:flex-row sm:items-center sm:justify-between sm:p-4 dark:border-border-dark dark:border-l-brand-600 dark:bg-surface-dark-secondary">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <AlertCircle className="h-4 w-4 flex-shrink-0 text-brand-600 sm:h-5 sm:w-5 dark:text-brand-500" />
+                <span className="text-xs font-semibold text-text-primary sm:text-sm dark:text-text-dark-primary">
                   You have unsaved changes
                 </span>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <Button
                   type="button"
                   onClick={handleCancel}
                   variant="outline"
                   size="sm"
-                  className="text-text-secondary dark:text-text-dark-secondary"
+                  className="flex-1 text-text-secondary sm:flex-none dark:text-text-dark-secondary"
                 >
                   Cancel
                 </Button>
@@ -474,6 +474,7 @@ const SettingsPage: React.FC = () => {
                   onClick={handleSave}
                   variant="primary"
                   size="sm"
+                  className="flex-1 sm:flex-none"
                   isLoading={manualUpdateMutation.isPending}
                   loadingText="Saving..."
                 >

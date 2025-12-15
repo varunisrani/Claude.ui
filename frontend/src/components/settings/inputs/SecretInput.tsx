@@ -63,7 +63,7 @@ export const SecretInput: React.FC<SecretInputProps> = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={cn('pr-9 text-xs', inputClassName)}
+        className={cn('pr-11 text-xs sm:pr-9', inputClassName)}
       />
       <Button
         type="button"
@@ -71,12 +71,12 @@ export const SecretInput: React.FC<SecretInputProps> = ({
         variant="ghost"
         size="icon"
         className={cn(
-          'absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 text-text-tertiary hover:text-text-secondary dark:text-text-dark-tertiary dark:hover:text-text-dark-secondary',
+          'absolute right-1 top-1/2 h-9 w-9 -translate-y-1/2 text-text-tertiary hover:text-text-secondary sm:h-7 sm:w-7 dark:text-text-dark-tertiary dark:hover:text-text-dark-secondary',
           buttonClassName,
         )}
         aria-label={isVisible ? 'Hide value' : 'Show value'}
       >
-        {isVisible ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+        {isVisible ? <EyeOff className="h-4 w-4 sm:h-3.5 sm:w-3.5" /> : <Eye className="h-4 w-4 sm:h-3.5 sm:w-3.5" />}
       </Button>
     </div>
     {renderHelperText(helperText)}

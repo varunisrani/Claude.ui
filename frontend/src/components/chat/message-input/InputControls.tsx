@@ -25,7 +25,7 @@ export function InputControls({
 }: InputControlsProps) {
   return (
     <div
-      className="absolute bottom-2.5 left-3 right-14 flex flex-wrap items-center gap-1.5 sm:gap-2"
+      className="absolute bottom-2 left-2 right-12 flex flex-wrap items-center gap-1 overflow-x-auto sm:bottom-2.5 sm:left-3 sm:right-14 sm:gap-2"
       onClick={(e) => e.preventDefault()}
     >
       {onAttach && <AttachButton onAttach={onAttach} />}
@@ -36,7 +36,10 @@ export function InputControls({
 
       <PermissionModeSelector dropdownPosition={dropdownPosition} disabled={isLoading} />
 
-      <ThinkingModeSelector dropdownPosition={dropdownPosition} disabled={isLoading} />
+      {/* Hide thinking mode on mobile to save space */}
+      <div className="hidden sm:block">
+        <ThinkingModeSelector dropdownPosition={dropdownPosition} disabled={isLoading} />
+      </div>
 
       <ModelSelector
         selectedModelId={selectedModelId}

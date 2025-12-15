@@ -35,7 +35,12 @@ export function ActivityBar() {
   const setCurrentView = useUIStore((state) => state.setCurrentView);
   const isMobile = useIsMobile();
 
-  const visibleButtons = buttons.filter((btn) => !isMobile || !btn.hideOnMobile);
+  // Hide entire activity bar on mobile - BottomNav replaces it
+  if (isMobile) {
+    return null;
+  }
+
+  const visibleButtons = buttons.filter((btn) => !btn.hideOnMobile);
 
   return (
     <div

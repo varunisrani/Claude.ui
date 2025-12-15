@@ -59,3 +59,4 @@ wheels/
 # Celery beat artifacts
 backend/celerybeat-schedule*
 frontend/core
+nul
