@@ -201,7 +201,16 @@ class APIClient {
 }
 
 const getApiBaseUrl = () => {
-  return import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
+  // Use environment variable if available, otherwise use production URL
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  // Production: Render backend URL
+  if (import.meta.env.PROD) {
+    return 'https://claude-ui-m5b3.onrender.com/api/v1';
+  }
+  // Development: localhost
+  return 'http://localhost:8080/api/v1';
 };
 
 export const apiClient = new APIClient(getApiBaseUrl());
