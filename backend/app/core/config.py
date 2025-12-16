@@ -32,6 +32,7 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: str | list[str] = [
         "http://localhost:3000",
         "https://claudex.pro",
+        "https://claude-ui-pi.vercel.app",
     ]
 
     TRUSTED_PROXY_HOSTS: str | list[str] = "127.0.0.1"
@@ -49,6 +50,8 @@ class Settings(BaseSettings):
     @classmethod
     def parse_cors_origins(cls, v: str | list[str]) -> list[str]:
         if isinstance(v, str):
+            if v == "*":
+                return ["*"]
             return [origin.strip() for origin in v.split(",")]
         return v
 
