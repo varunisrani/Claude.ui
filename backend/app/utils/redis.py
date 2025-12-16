@@ -1,4 +1,5 @@
 import logging
+import ssl
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from redis.asyncio import Redis
@@ -10,9 +11,22 @@ settings = get_settings()
 logger = logging.getLogger(__name__)
 
 
+def _get_redis_ssl_context() -> ssl.SSLContext | None:
+    """Create SSL context for rediss:// connections."""
+    if not settings.REDIS_URL.startswith("rediss://"):
+        return None
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    return ctx
+
+
 @asynccontextmanager
 async def redis_connection() -> "AsyncIterator[Redis[str]]":
-    redis: "Redis[str]" = Redis.from_url(settings.REDIS_URL, decode_responses=True)
+    ssl_context = _get_redis_ssl_context()
+    redis: "Redis[str]" = Redis.from_url(
+        settings.REDIS_URL, decode_responses=True, ssl=ssl_context
+    )
     try:
         yield redis
     finally:

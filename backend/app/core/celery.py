@@ -1,5 +1,6 @@
 import json
 import logging
+import ssl
 from typing import Any
 
 from celery import Celery
@@ -18,6 +19,13 @@ celery_app = Celery(
     include=["app.tasks.chat_processor", "app.tasks.scheduler"],
 )
 
+# Configure SSL for Redis if using rediss:// protocol
+ssl_config = None
+if settings.REDIS_URL.startswith("rediss://"):
+    ssl_config = {
+        "ssl_cert_reqs": ssl.CERT_NONE,
+    }
+
 celery_app.conf.update(
     task_serializer="json",
     accept_content=["json"],
@@ -32,6 +40,8 @@ celery_app.conf.update(
     result_expires=settings.CELERY_RESULT_EXPIRES_SECONDS,
     task_ignore_result=False,
     broker_connection_retry_on_startup=True,
+    broker_use_ssl=ssl_config,
+    redis_backend_use_ssl=ssl_config,
 )
 
 celery_app.conf.beat_schedule = {
