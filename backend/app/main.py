@@ -36,7 +36,7 @@ from app.admin.views import (
     UserSettingsAdmin,
 )
 from prometheus_fastapi_instrumentator import Instrumentator
-from granian.utils.proxies import wrap_asgi_with_proxy_headers
+from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -151,4 +151,5 @@ def create_application() -> FastAPI:
 app = create_application()
 Instrumentator().instrument(app).expose(app)
 
-app = wrap_asgi_with_proxy_headers(app, trusted_hosts=settings.TRUSTED_PROXY_HOSTS)
+# Wrap with proxy headers middleware for proper IP handling behind reverse proxy
+app = ProxyHeadersMiddleware(app, trusted_hosts=settings.TRUSTED_PROXY_HOSTS)
