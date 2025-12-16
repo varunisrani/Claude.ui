@@ -22,6 +22,7 @@ engine = create_async_engine(
     pool_recycle=3600,
     pool_timeout=120,
     echo=False,
+    connect_args={"statement_cache_size": 0},
 )
 SessionLocal = async_sessionmaker(
     engine,
@@ -38,6 +39,7 @@ celery_engine = create_async_engine(
     settings.DATABASE_URL,
     poolclass=NullPool,
     echo=False,
+    connect_args={"statement_cache_size": 0},
 )
 
 CelerySessionLocal = async_sessionmaker(
